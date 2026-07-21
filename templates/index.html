@@ -1,11 +1,11 @@
 {% extends "base.html" %}
-{% block title %}SaldoPlus - Inicio{% endblock %}
+{% block title %}SaldoPlus - Multiplica tu Saldo Movil{% endblock %}
 {% block content %}
 <section class="hero">
     <div class="container">
         <div class="hero-content">
-            <h1>Haz crecer tu saldo movil</h1>
-            <p class="hero-subtitle">Invierte 25 CUP y recibe 30 CUP en pocos dias. Sistema seguro, transparente y con resultados comprobados.</p>
+            <h1>Multiplica tu saldo movil</h1>
+            <p class="hero-subtitle">Invierte solo 25 CUP y recibe 32.50 CUP en pocos dias. Ganancia del 30% con operaciones reales de compra-venta de saldo. Sin trucos, sin esquemas ocultos.</p>
             <div class="hero-buttons">
                 <a href="{{ url_for('registro') }}" class="btn btn-large btn-primary">Comenzar Ahora</a>
                 <a href="#como-funciona" class="btn btn-large btn-outline">Como Funciona</a>
@@ -13,16 +13,16 @@
         </div>
         <div class="hero-stats">
             <div class="stat-card">
-                <span class="stat-number">x1.2</span>
-                <span class="stat-label">Multiplicacion</span>
+                <span class="stat-number">x1.3</span>
+                <span class="stat-label">Multiplicacion (30%)</span>
             </div>
             <div class="stat-card">
                 <span class="stat-number">25 CUP</span>
                 <span class="stat-label">Inversion minima</span>
             </div>
             <div class="stat-card">
-                <span class="stat-number">3-5</span>
-                <span class="stat-label">Dias aprox.</span>
+                <span class="stat-number">32.50 CUP</span>
+                <span class="stat-label">Retorno total</span>
             </div>
         </div>
     </div>
@@ -30,27 +30,28 @@
 
 <section id="como-funciona" class="section">
     <div class="container">
-        <h2>Como funciona?</h2>
+        <h2>Como funciona SaldoPlus?</h2>
+        <p style="text-align: center; color: #94a3b8; margin-bottom: 40px; max-width: 700px; margin-left: auto; margin-right: auto;">SaldoPlus es una plataforma que opera comprando y vendiendo saldo movil en el mercado cubano. Tu inviertes 25 CUP, nosotros lo multiplicamos con operaciones reales y te devolvemos 32.50 CUP.</p>
         <div class="steps">
             <div class="step">
                 <div class="step-number">1</div>
                 <h3>Registrate</h3>
-                <p>Crea tu cuenta gratis y accede a tu panel personal.</p>
+                <p>Crea tu cuenta gratis con tu nombre, email y numero de telefono.</p>
             </div>
             <div class="step">
                 <div class="step-number">2</div>
-                <h3>Deposita 25 CUP</h3>
-                <p>Transfiere saldo movil a nuestra cuenta registrada.</p>
+                <h3>Transfiere 25 CUP</h3>
+                <p>Transfiere 25 CUP de saldo movil al numero <strong>56241574</strong> usando el codigo USSD o Transfermovil.</p>
             </div>
             <div class="step">
                 <div class="step-number">3</div>
-                <h3>Invierte</h3>
-                <p>Activa tu inversion desde el panel. Nosotros operamos en el mercado de saldo.</p>
+                <h3>Activa tu inversion</h3>
+                <p>Cuando confirmemos tu pago, activa tu inversion desde el panel personal.</p>
             </div>
             <div class="step">
                 <div class="step-number">4</div>
-                <h3>Recibe 30 CUP</h3>
-                <p>En pocos dias recibes tu retorno de 30 CUP directamente en tu cuenta.</p>
+                <h3>Recibe 32.50 CUP</h3>
+                <p>En 3 a 5 dias recibes tu retorno de 32.50 CUP. Ganas 7.50 CUP por cada inversion.</p>
             </div>
         </div>
     </div>
@@ -58,22 +59,42 @@
 
 <section class="section section-dark">
     <div class="container">
-        <h2>Por que funciona?</h2>
+        <h2>Por que SaldoPlus es confiable?</h2>
         <div class="features">
             <div class="feature">
                 <div class="feature-icon">📊</div>
                 <h3>Operacion real</h3>
-                <p>Trabajamos con compra-venta de saldo en el mercado. Cada inversion esta respaldada por una transaccion genuina.</p>
+                <p>Cada inversion esta respaldada por compra-venta real de saldo en el mercado. No es un esquema piramidal. El dinero se multiplica con transacciones genuinas.</p>
             </div>
             <div class="feature">
                 <div class="feature-icon">🔒</div>
                 <h3>Seguridad</h3>
-                <p>Tus datos y tu saldo estan protegidos. Solo procesamos el monto que autorizas.</p>
+                <p>Tus datos personales estan protegidos. Solo procesamos el monto que tu autorizas. No compartimos tu informacion con terceros.</p>
             </div>
             <div class="feature">
                 <div class="feature-icon">⚡</div>
-                <h3>Rapidez</h3>
-                <p>Resultados en 3 a 5 dias. Te notificamos cuando tu operacion se complete.</p>
+                <h3>Resultados rapidos</h3>
+                <p>Retorno en 3 a 5 dias habiles. Recibes notificaciones en tu panel cuando tu operacion se complete. Transparencia total.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <h2>Preguntas frecuentes</h2>
+        <div class="features">
+            <div class="feature">
+                <h3>Como generan la ganancia?</h3>
+                <p>Compramos saldo a una tasa y lo vendemos a otra mayor. El margen de esa operacion es lo que permite pagar tu retorno y generar ganancia para la plataforma.</p>
+            </div>
+            <div class="feature">
+                <h3>Es seguro invertir?</h3>
+                <p>Si. Solo trabajamos con 25 CUP por operacion para minimizar riesgos. Puedes invertir multiples veces segun tu saldo disponible.</p>
+            </div>
+            <div class="feature">
+                <h3>Cuando recibo mi dinero?</h3>
+                <p>En un plazo de 3 a 5 dias habiles tras activar tu inversion. El retorno se acredita directamente en tu cuenta de SaldoPlus.</p>
             </div>
         </div>
     </div>
@@ -82,7 +103,7 @@
 <section class="section cta">
     <div class="container">
         <h2>Listo para multiplicar tu saldo?</h2>
-        <p>Empieza con solo 25 CUP. Sin letra pequena, sin trucos.</p>
+        <p>Empieza con solo 25 CUP y recibe 32.50 CUP. Registrate ahora.</p>
         <a href="{{ url_for('registro') }}" class="btn btn-large btn-primary">Crear Cuenta Gratis</a>
     </div>
 </section>
