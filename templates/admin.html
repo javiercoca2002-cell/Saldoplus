@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}Panel Admin - SaldoPlus{% endblock %}
+{% block content %}
+<div class="container admin-panel">
+    <h1>Panel de Administracion</h1>
+    
+    <div class="admin-stats">
+        <div class="stat-card">
+            <span class="stat-number">{{ usuarios|length }}</span>
+            <span class="stat-label">Usuarios</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-number">{{ "%.2f"|format(total_invertido) }} CUP</span>
+            <span class="stat-label">Total Invertido</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-number">{{ "%.2f"|format(total_pagado) }} CUP</span>
+            <span class="stat-label">Total Pagado</span>
+        </div>
+    </div>
+
+    <div class="admin-section">
+        <h2>Operaciones Pendientes</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Usuario</th>
+                    <th>Monto</th>
+                    <th>Retorno</th>
+                    <th>Estado</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for op in operaciones %}
+                <tr>
+                    <td>#{{ op.id }}</td>
+                    <td>{{ op.usuario.nombre }}</td>
+                    <td>{{ "%.2f"|format(op.monto_invertido) }} CUP</td>
+                    <td>{{ "%.2f"|format(op.monto_retorno) }} CUP</td>
+                    <td><span class="status status-{{ op.estado }}">{{ op.estado }}</span></td>
+                    <td>{{ op.fecha_creacion.strftime('%d/%m/%Y') }}</td>
+                    <td class="actions">
+                        {% if op.estado == 'pendiente' %}
+                            <a href="{{ url_for('completar_operacion', operacion_id=op.id) }}" class="btn btn-sm btn-success">✓ Completar</a>
+                            <a href="{{ url_for('cancelar_operacion', operacion_id=op.id) }}" class="btn btn-sm btn-danger">✗ Cancelar</a>
+                        {% else %}
+                            <span class="text-muted">—</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="admin-section">
+        <h2>Usuarios</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Saldo</th>
+                    <th>Ganado</th>
+                    <th>Accion</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for u in usuarios %}
+                <tr>
+                    <td>#{{ u.id }}</td>
+                    <td>{{ u.nombre }}</td>
+                    <td>{{ u.email }}</td>
+                    <td>{{ "%.2f"|format(u.saldo_actual) }} CUP</td>
+                    <td>{{ "%.2f"|format(u.total_ganado) }} CUP</td>
+                    <td>
+                        <form method="POST" action="{{ url_for('agregar_saldo', usuario_id=u.id) }}" class="inline-form">
+                            <input type="number" name="monto" step="0.01" placeholder="CUP" style="width: 80px;">
+                            <button type="submit" class="btn btn-sm btn-primary">Agregar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
