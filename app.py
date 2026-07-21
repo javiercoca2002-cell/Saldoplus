@@ -26,7 +26,8 @@ def crear_admin():
             nombre='Administrador',
             email='admin@saldoplus.com',
             password=generate_password_hash('admin123'),
-            es_admin=True
+            es_admin=True,
+            pago_pendiente=False
         )
         db.session.add(admin)
         db.session.commit()
@@ -40,6 +41,7 @@ def registro():
     if request.method == 'POST':
         nombre = request.form.get('nombre')
         email = request.form.get('email')
+        telefono = request.form.get('telefono')
         password = request.form.get('password')
         
         if Usuario.query.filter_by(email=email).first():
@@ -49,12 +51,13 @@ def registro():
         usuario = Usuario(
             nombre=nombre,
             email=email,
+            telefono=telefono,
             password=generate_password_hash(password)
         )
         db.session.add(usuario)
         db.session.commit()
         
-        flash('Cuenta creada exitosamente', 'success')
+        flash('Cuenta creada exitosamente. Ahora transfiere 25 CUP al 56241574 para activar tu saldo.', 'success')
         return redirect(url_for('login'))
     
     return render_template('registro.html')
@@ -99,7 +102,7 @@ def invertir():
         return redirect(url_for('dashboard'))
     
     if current_user.saldo_actual < monto:
-        flash('No tienes suficiente saldo disponible', 'error')
+        flash('No tienes suficiente saldo disponible. Primero transfiere 25 CUP al 56241574.', 'error')
         return redirect(url_for('dashboard'))
     
     operacion = Operacion(
@@ -113,7 +116,7 @@ def invertir():
     db.session.add(operacion)
     db.session.commit()
     
-    flash(f'Inversion de {monto} CUP creada exitosamente', 'success')
+    flash(f'Inversion de {monto} CUP creada exitosamente. En 3-5 dias recibiras 30 CUP.', 'success')
     return redirect(url_for('dashboard'))
 
 @app.route('/operaciones')
@@ -151,7 +154,7 @@ def completar_operacion(operacion_id):
     if operacion and operacion.estado == 'pendiente':
         operacion.completar()
         db.session.commit()
-        flash(f'Operacion #{operacion.id} completada', 'success')
+        flash(f'Operacion #{operacion.id} completada. Se acreditaron {operacion.monto_retorno} CUP al usuario.', 'success')
     
     return redirect(url_for('admin'))
 
@@ -167,7 +170,7 @@ def cancelar_operacion(operacion_id):
         operacion.estado = 'cancelada'
         operacion.usuario.saldo_actual += operacion.monto_invertido
         db.session.commit()
-        flash(f'Operacion #{operacion.id} cancelada', 'info')
+        flash(f'Operacion #{operacion.id} cancelada. Se devolvieron {operacion.monto_invertido} CUP al usuario.', 'info')
     
     return redirect(url_for('admin'))
 
@@ -183,8 +186,24 @@ def agregar_saldo(usuario_id):
     
     if usuario and monto > 0:
         usuario.saldo_actual += monto
+        usuario.pago_pendiente = False
         db.session.commit()
-        flash(f'Se agregaron {monto} CUP a {usuario.nombre}', 'success')
+        flash(f'Se agregaron {monto} CUP a {usuario.nombre}. Pago confirmado.', 'success')
+    
+    return redirect(url_for('admin'))
+
+@app.route('/admin/confirmar-pago/<int:usuario_id>')
+@login_required
+def confirmar_pago(usuario_id):
+    if not current_user.es_admin:
+        flash('Acceso denegado', 'error')
+        return redirect(url_for('dashboard'))
+    
+    usuario = Usuario.query.get(usuario_id)
+    if usuario:
+        usuario.pago_pendiente = False
+        db.session.commit()
+        flash(f'Pago confirmado para {usuario.nombre}. Ya puede invertir.', 'success')
     
     return redirect(url_for('admin'))
 
