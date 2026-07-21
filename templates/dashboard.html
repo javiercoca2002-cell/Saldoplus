@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Mi Panel - SaldoPlus{% endblock %}
+{% block content %}
+<div class="container dashboard">
+    <h1>Mi Panel</h1>
+    
+    <div class="dashboard-cards">
+        <div class="dash-card">
+            <span class="dash-label">Saldo Disponible</span>
+            <span class="dash-value">{{ "%.2f"|format(current_user.saldo_actual) }} CUP</span>
+        </div>
+        <div class="dash-card">
+            <span class="dash-label">Total Ganado</span>
+            <span class="dash-value text-success">{{ "%.2f"|format(current_user.total_ganado) }} CUP</span>
+        </div>
+        <div class="dash-card">
+            <span class="dash-label">Operaciones Activas</span>
+            <span class="dash-value">{{ operaciones|selectattr('estado', 'equalto', 'pendiente')|list|length }}</span>
+        </div>
+    </div>
+
+    <div class="invest-section">
+        <h3>Realizar Inversion</h3>
+        <form method="POST" action="{{ url_for('invertir') }}" class="invest-form">
+            <div class="invest-input-group">
+                <span class="invest-currency">CUP</span>
+                <input type="number" name="monto" value="25" readonly class="invest-input">
+            </div>
+            <button type="submit" class="btn btn-primary">Invertir 25 CUP</button>
+        </form>
+        <p class="invest-info">Multiplicacion: x1.2 | Retorno: 30 CUP | Plazo estimado: 3-5 dias</p>
+    </div>
+
+    <div class="recent-operations">
+        <h3>Ultimas Operaciones</h3>
+        {% if operaciones %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Monto</th>
+                    <th>Retorno</th>
+                    <th>Estado</th>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for op in operaciones[:5] %}
+                <tr>
+                    <td>#{{ op.id }}</td>
+                    <td>{{ "%.2f"|format(op.monto_invertido) }} CUP</td>
+                    <td>{{ "%.2f"|format(op.monto_retorno) }} CUP</td>
+                    <td><span class="status status-{{ op.estado }}">{{ op.estado }}</span></td>
+                    <td>{{ op.fecha_creacion.strftime('%d/%m/%Y') }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{{ url_for('operaciones') }}" class="btn btn-outline">Ver todas</a>
+        {% else %}
+        <p class="empty-state">Aun no tienes operaciones. Haz tu primera inversion!</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
