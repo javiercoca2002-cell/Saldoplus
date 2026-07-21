@@ -8,9 +8,11 @@ class Usuario(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
+    telefono = db.Column(db.String(20), default='')
     password = db.Column(db.String(200), nullable=False)
     saldo_actual = db.Column(db.Float, default=0.0)
     total_ganado = db.Column(db.Float, default=0.0)
+    pago_pendiente = db.Column(db.Boolean, default=True)
     es_admin = db.Column(db.Boolean, default=False)
     fecha_registro = db.Column(db.DateTime, default=datetime.utcnow)
     
