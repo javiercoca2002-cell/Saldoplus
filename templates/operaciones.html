@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Mis Operaciones - SaldoPlus{% endblock %}
+{% block content %}
+<div class="container">
+    <h1>Historial de Operaciones</h1>
+    {% if operaciones %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Monto Invertido</th>
+                <th>Retorno</th>
+                <th>Ganancia</th>
+                <th>Estado</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for op in operaciones %}
+            <tr>
+                <td>#{{ op.id }}</td>
+                <td>{{ "%.2f"|format(op.monto_invertido) }} CUP</td>
+                <td>{{ "%.2f"|format(op.monto_retorno) }} CUP</td>
+                <td class="{% if op.estado == 'completada' %}text-success{% endif %}">
+                    {% if op.estado == 'completada' %}
+                        +{{ "%.2f"|format(op.monto_retorno - op.monto_invertido) }} CUP
+                    {% else %}
+                        —
+                    {% endif %}
+                </td>
+                <td><span class="status status-{{ op.estado }}">{{ op.estado }}</span></td>
+                <td>{{ op.fecha_creacion.strftime('%d/%m/%Y') }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="empty-state">No tienes operaciones registradas.</p>
+    {% endif %}
+    <a href="{{ url_for('dashboard') }}" class="btn btn-outline">← Volver al Panel</a>
+</div>
+{% endblock %}
