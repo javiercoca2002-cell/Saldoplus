@@ -4,6 +4,7 @@
 <div class="auth-container">
     <div class="auth-card">
         <h2>Crear Cuenta</h2>
+        <p style="text-align: center; color: #94a3b8; margin-bottom: 20px;">Registrate para empezar a multiplicar tu saldo. Invierte 25 CUP y recibe 32.50 CUP.</p>
         <form method="POST">
             <div class="form-group">
                 <label>Nombre completo</label>
@@ -14,12 +15,17 @@
                 <input type="email" name="email" required placeholder="tu@email.com">
             </div>
             <div class="form-group">
+                <label>Numero de telefono</label>
+                <input type="text" name="telefono" required placeholder="Ej: 51234567">
+                <small style="color: #94a3b8;">Necesario para identificar tu pago cuando transfieras los 25 CUP.</small>
+            </div>
+            <div class="form-group">
                 <label>Contrasena</label>
                 <input type="password" name="password" required placeholder="Minimo 6 caracteres" minlength="6">
             </div>
             <button type="submit" class="btn btn-primary btn-block">Crear Cuenta</button>
         </form>
-        <p class="auth-link">Ya tienes cuenta? <a href="{{ url_for('login') }}">Ingresa</a></p>
+        <p class="auth-link">Ya tienes cuenta? <a href="{{ url_for('login') }}">Ingresa aqui</a></p>
     </div>
 </div>
 {% endblock %}
