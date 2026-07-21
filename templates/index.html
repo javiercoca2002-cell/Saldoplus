@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}SaldoPlus - Inicio{% endblock %}
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1>Haz crecer tu saldo movil</h1>
+            <p class="hero-subtitle">Invierte 25 CUP y recibe 30 CUP en pocos dias. Sistema seguro, transparente y con resultados comprobados.</p>
+            <div class="hero-buttons">
+                <a href="{{ url_for('registro') }}" class="btn btn-large btn-primary">Comenzar Ahora</a>
+                <a href="#como-funciona" class="btn btn-large btn-outline">Como Funciona</a>
+            </div>
+        </div>
+        <div class="hero-stats">
+            <div class="stat-card">
+                <span class="stat-number">x1.2</span>
+                <span class="stat-label">Multiplicacion</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">25 CUP</span>
+                <span class="stat-label">Inversion minima</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">3-5</span>
+                <span class="stat-label">Dias aprox.</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="como-funciona" class="section">
+    <div class="container">
+        <h2>Como funciona?</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Registrate</h3>
+                <p>Crea tu cuenta gratis y accede a tu panel personal.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Deposita 25 CUP</h3>
+                <p>Transfiere saldo movil a nuestra cuenta registrada.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Invierte</h3>
+                <p>Activa tu inversion desde el panel. Nosotros operamos en el mercado de saldo.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <h3>Recibe 30 CUP</h3>
+                <p>En pocos dias recibes tu retorno de 30 CUP directamente en tu cuenta.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section section-dark">
+    <div class="container">
+        <h2>Por que funciona?</h2>
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">📊</div>
+                <h3>Operacion real</h3>
+                <p>Trabajamos con compra-venta de saldo en el mercado. Cada inversion esta respaldada por una transaccion genuina.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🔒</div>
+                <h3>Seguridad</h3>
+                <p>Tus datos y tu saldo estan protegidos. Solo procesamos el monto que autorizas.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">⚡</div>
+                <h3>Rapidez</h3>
+                <p>Resultados en 3 a 5 dias. Te notificamos cuando tu operacion se complete.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section cta">
+    <div class="container">
+        <h2>Listo para multiplicar tu saldo?</h2>
+        <p>Empieza con solo 25 CUP. Sin letra pequena, sin trucos.</p>
+        <a href="{{ url_for('registro') }}" class="btn btn-large btn-primary">Crear Cuenta Gratis</a>
+    </div>
+</section>
+{% endblock %}
