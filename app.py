@@ -7,7 +7,7 @@ from datetime import datetime
 import os
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'clave-super-secreta-saldoplus-2024'
+app.config['SECRET_KEY'] = 'clave-super-secreta-saldoplus-2026'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///saldoplus.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
