@@ -7,7 +7,7 @@
     <div class="admin-stats">
         <div class="stat-card">
             <span class="stat-number">{{ usuarios|length }}</span>
-            <span class="stat-label">Usuarios</span>
+            <span class="stat-label">Usuarios registrados</span>
         </div>
         <div class="stat-card">
             <span class="stat-number">{{ "%.2f"|format(total_invertido) }} CUP</span>
@@ -20,7 +20,7 @@
     </div>
 
     <div class="admin-section">
-        <h2>Operaciones Pendientes</h2>
+        <h2>Operaciones</h2>
         <table class="table">
             <thead>
                 <tr>
@@ -64,6 +64,8 @@
                     <th>ID</th>
                     <th>Nombre</th>
                     <th>Email</th>
+                    <th>Telefono</th>
+                    <th>Pago</th>
                     <th>Saldo</th>
                     <th>Ganado</th>
                     <th>Accion</th>
@@ -75,13 +77,24 @@
                     <td>#{{ u.id }}</td>
                     <td>{{ u.nombre }}</td>
                     <td>{{ u.email }}</td>
+                    <td>{{ u.telefono }}</td>
+                    <td>
+                        {% if u.pago_pendiente %}
+                            <span style="color: #f59e0b;">⚠️ Pendiente</span>
+                        {% else %}
+                            <span style="color: #10b981;">✅ Pagado</span>
+                        {% endif %}
+                    </td>
                     <td>{{ "%.2f"|format(u.saldo_actual) }} CUP</td>
                     <td>{{ "%.2f"|format(u.total_ganado) }} CUP</td>
                     <td>
                         <form method="POST" action="{{ url_for('agregar_saldo', usuario_id=u.id) }}" class="inline-form">
-                            <input type="number" name="monto" step="0.01" placeholder="CUP" style="width: 80px;">
+                            <input type="number" name="monto" step="0.01" placeholder="CUP" style="width: 70px;">
                             <button type="submit" class="btn btn-sm btn-primary">Agregar</button>
                         </form>
+                        {% if u.pago_pendiente %}
+                            <a href="{{ url_for('confirmar_pago', usuario_id=u.id) }}" class="btn btn-sm btn-success" style="margin-top: 3px;">Confirmar Pago</a>
+                        {% endif %}
                     </td>
                 </tr>
                 {% endfor %}
