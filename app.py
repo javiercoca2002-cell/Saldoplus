@@ -108,7 +108,7 @@ def invertir():
     operacion = Operacion(
         usuario_id=current_user.id,
         monto_invertido=monto,
-        monto_retorno=monto * 1.2
+        monto_retorno=monto * 1.3
     )
     
     current_user.saldo_actual -= monto
@@ -116,7 +116,7 @@ def invertir():
     db.session.add(operacion)
     db.session.commit()
     
-    flash(f'Inversion de {monto} CUP creada exitosamente. En 3-5 dias recibiras 30 CUP.', 'success')
+    flash(f'Inversion de {monto} CUP creada exitosamente. En 3-5 dias recibiras {monto * 1.3:.2f} CUP.', 'success')
     return redirect(url_for('dashboard'))
 
 @app.route('/operaciones')
