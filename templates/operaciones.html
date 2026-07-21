@@ -3,6 +3,7 @@
 {% block content %}
 <div class="container">
     <h1>Historial de Operaciones</h1>
+    <p style="color: #94a3b8; margin-bottom: 30px;">Aqui puedes ver todas tus inversiones, su estado y ganancias.</p>
     {% if operaciones %}
     <table class="table">
         <thead>
@@ -34,9 +35,20 @@
             {% endfor %}
         </tbody>
     </table>
+    <div style="margin-top: 30px; padding: 20px; background: #1e293b; border-radius: 12px;">
+        <h3>Resumen de ganancias</h3>
+        {% set total_ganado = 0 %}
+        {% for op in operaciones %}
+            {% if op.estado == 'completada' %}
+                {% set total_ganado = total_ganado + (op.monto_retorno - op.monto_invertido) %}
+            {% endif %}
+        {% endfor %}
+        <p style="font-size: 1.5rem; font-weight: 700; color: #10b981;">{{ "%.2f"|format(total_ganado) }} CUP</p>
+        <p style="color: #94a3b8;">Total ganado con SaldoPlus</p>
+    </div>
     {% else %}
-    <p class="empty-state">No tienes operaciones registradas.</p>
+    <p class="empty-state">No tienes operaciones registradas. <a href="{{ url_for('dashboard') }}">Ir al panel</a> para empezar a invertir.</p>
     {% endif %}
-    <a href="{{ url_for('dashboard') }}" class="btn btn-outline">← Volver al Panel</a>
+    <a href="{{ url_for('dashboard') }}" class="btn btn-outline" style="margin-top: 20px;">← Volver al Panel</a>
 </div>
 {% endblock %}
