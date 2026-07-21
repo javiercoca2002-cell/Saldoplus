@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SaldoPlus{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="{{ url_for('index') }}" class="logo">💰 SaldoPlus</a>
+            <div class="nav-links">
+                {% if current_user.is_authenticated %}
+                    <span class="user-info">👤 {{ current_user.nombre }} | {{ "%.2f"|format(current_user.saldo_actual) }} CUP</span>
+                    {% if current_user.es_admin %}
+                        <a href="{{ url_for('admin') }}" class="btn btn-admin">Panel Admin</a>
+                    {% endif %}
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-outline">Mi Cuenta</a>
+                    <a href="{{ url_for('logout') }}" class="btn btn-outline">Salir</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="btn btn-outline">Ingresar</a>
+                    <a href="{{ url_for('registro') }}" class="btn btn-primary">Registrarse</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="container flash-container">
+                    {% for category, message in messages %}
+                        <div class="flash-message flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 SaldoPlus. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+</body>
+</html>
