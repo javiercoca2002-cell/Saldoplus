@@ -6,21 +6,22 @@
     
     <div class="admin-stats">
         <div class="stat-card">
-            <span class="stat-number">{{ usuarios|length }}</span>
+            <span class="stat-number" id="total-usuarios">{{ usuarios|length }}</span>
             <span class="stat-label">Usuarios registrados</span>
         </div>
         <div class="stat-card">
-            <span class="stat-number">{{ "%.2f"|format(total_invertido) }} CUP</span>
+            <span class="stat-number" id="total-invertido">{{ "%.2f"|format(total_invertido) }} CUP</span>
             <span class="stat-label">Total Invertido</span>
         </div>
         <div class="stat-card">
-            <span class="stat-number">{{ "%.2f"|format(total_pagado) }} CUP</span>
+            <span class="stat-number" id="total-pagado">{{ "%.2f"|format(total_pagado) }} CUP</span>
             <span class="stat-label">Total Pagado</span>
         </div>
     </div>
 
     <div class="admin-section">
         <h2>Operaciones</h2>
+        <div id="tabla-operaciones-admin">
         <table class="table">
             <thead>
                 <tr>
@@ -54,10 +55,12 @@
                 {% endfor %}
             </tbody>
         </table>
+        </div>
     </div>
 
     <div class="admin-section">
         <h2>Usuarios</h2>
+        <div id="tabla-usuarios-admin">
         <table class="table">
             <thead>
                 <tr>
@@ -100,6 +103,63 @@
                 {% endfor %}
             </tbody>
         </table>
+        </div>
     </div>
 </div>
+
+<script>
+function actualizarAdmin() {
+    fetch('/api/admin')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('total-usuarios').textContent = data.total_usuarios;
+            document.getElementById('total-invertido').textContent = data.total_invertido.toFixed(2) + ' CUP';
+            document.getElementById('total-pagado').textContent = data.total_pagado.toFixed(2) + ' CUP';
+            
+            let htmlOps = '<table class="table"><thead><tr><th>ID</th><th>Usuario</th><th>Monto</th><th>Retorno</th><th>Estado</th><th>Fecha</th><th>Acciones</th></tr></thead><tbody>';
+            data.operaciones.forEach(op => {
+                let acciones = op.estado === 'pendiente' 
+                    ? `<a href="/admin/completar/${op.id}" class="btn btn-sm btn-success">✓ Completar</a> <a href="/admin/cancelar/${op.id}" class="btn btn-sm btn-danger">✗ Cancelar</a>`
+                    : '<span class="text-muted">—</span>';
+                htmlOps += `<tr>
+                    <td>#${op.id}</td>
+                    <td>${op.usuario}</td>
+                    <td>${op.monto.toFixed(2)} CUP</td>
+                    <td>${op.retorno.toFixed(2)} CUP</td>
+                    <td><span class="status status-${op.estado}">${op.estado}</span></td>
+                    <td>${op.fecha}</td>
+                    <td class="actions">${acciones}</td>
+                </tr>`;
+            });
+            htmlOps += '</tbody></table>';
+            document.getElementById('tabla-operaciones-admin').innerHTML = htmlOps;
+            
+            let htmlUsu = '<table class="table"><thead><tr><th>ID</th><th>Nombre</th><th>Email</th><th>Telefono</th><th>Pago</th><th>Saldo</th><th>Ganado</th><th>Accion</th></tr></thead><tbody>';
+            data.usuarios.forEach(u => {
+                let pago = u.pago_pendiente ? '<span style="color: #f59e0b;">⚠️ Pendiente</span>' : '<span style="color: #10b981;">✅ Pagado</span>';
+                let accion = `<form method="POST" action="/admin/agregar-saldo/${u.id}" class="inline-form">
+                    <input type="number" name="monto" step="0.01" placeholder="CUP" style="width: 70px;">
+                    <button type="submit" class="btn btn-sm btn-primary">Agregar</button>
+                </form>`;
+                if (u.pago_pendiente) {
+                    accion += `<a href="/admin/confirmar-pago/${u.id}" class="btn btn-sm btn-success" style="margin-top: 3px;">Confirmar Pago</a>`;
+                }
+                htmlUsu += `<tr>
+                    <td>#${u.id}</td>
+                    <td>${u.nombre}</td>
+                    <td>${u.email}</td>
+                    <td>${u.telefono}</td>
+                    <td>${pago}</td>
+                    <td>${u.saldo.toFixed(2)} CUP</td>
+                    <td>${u.ganado.toFixed(2)} CUP</td>
+                    <td>${accion}</td>
+                </tr>`;
+            });
+            htmlUsu += '</tbody></table>';
+            document.getElementById('tabla-usuarios-admin').innerHTML = htmlUsu;
+        });
+}
+
+setInterval(actualizarAdmin, 60000);
+</script>
 {% endblock %}
