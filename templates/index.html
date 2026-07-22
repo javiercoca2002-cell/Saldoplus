@@ -8,7 +8,7 @@
             <p class="hero-subtitle">Invierte solo 25 CUP y recibe 32.50 CUP en pocos dias. Ganancia del 30% con operaciones reales de compra-venta de saldo. Sin trucos, sin esquemas ocultos.</p>
             <div class="hero-buttons">
                 <a href="{{ url_for('registro') }}" class="btn btn-large btn-primary">Comenzar Ahora</a>
-                <a href="#como-funciona" class="btn btn-large btn-outline">Como Funciona</a>
+                <a href="#calculadora" class="btn btn-large btn-outline">Calcular Ganancia</a>
             </div>
         </div>
         <div class="hero-stats">
@@ -28,7 +28,42 @@
     </div>
 </section>
 
-<section id="como-funciona" class="section">
+<section id="calculadora" class="section">
+    <div class="container">
+        <h2>Calcula tu Ganancia</h2>
+        <p style="text-align: center; color: #94a3b8; margin-bottom: 30px;">Desliza para ver cuanto ganarias segun las veces que inviertas.</p>
+        <div style="max-width: 500px; margin: 0 auto; background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 30px;">
+            <div class="form-group">
+                <label style="color: #e2e8f0; font-weight: 600;">Veces que inviertes 25 CUP</label>
+                <input type="range" id="veces" min="1" max="20" value="1" oninput="calcular()" style="width: 100%; margin: 15px 0;">
+                <div style="display: flex; justify-content: space-between; color: #94a3b8; font-size: 0.85rem;">
+                    <span>1 vez</span>
+                    <span id="veces-valor" style="color: #6366f1; font-weight: 700; font-size: 1.2rem;">1</span>
+                    <span>20 veces</span>
+                </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 25px;">
+                <div style="background: #0f172a; border-radius: 8px; padding: 15px; text-align: center;">
+                    <span style="color: #94a3b8; font-size: 0.8rem;">Total Invertido</span>
+                    <p style="font-size: 1.5rem; font-weight: 700; color: #e2e8f0;" id="invertido">25.00 CUP</p>
+                </div>
+                <div style="background: #0f172a; border-radius: 8px; padding: 15px; text-align: center;">
+                    <span style="color: #94a3b8; font-size: 0.8rem;">Total a Recibir</span>
+                    <p style="font-size: 1.5rem; font-weight: 700; color: #10b981;" id="recibir">32.50 CUP</p>
+                </div>
+            </div>
+            <div style="background: rgba(99, 102, 241, 0.1); border: 1px solid #6366f1; border-radius: 8px; padding: 15px; margin-top: 15px; text-align: center;">
+                <span style="color: #94a3b8; font-size: 0.8rem;">🔥 Ganancia Neta</span>
+                <p style="font-size: 2rem; font-weight: 900; color: #6366f1;" id="ganancia">7.50 CUP</p>
+            </div>
+            <div style="margin-top: 20px; text-align: center;">
+                <a href="{{ url_for('registro') }}" class="btn btn-primary">Quiero Empezar</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="como-funciona" class="section section-dark">
     <div class="container">
         <h2>Como funciona SaldoPlus?</h2>
         <p style="text-align: center; color: #94a3b8; margin-bottom: 40px; max-width: 700px; margin-left: auto; margin-right: auto;">SaldoPlus es una plataforma que opera comprando y vendiendo saldo movil en el mercado cubano. Tu inviertes 25 CUP, nosotros lo multiplicamos con operaciones reales y te devolvemos 32.50 CUP.</p>
@@ -57,7 +92,7 @@
     </div>
 </section>
 
-<section class="section section-dark">
+<section class="section">
     <div class="container">
         <h2>Tasas del Mercado en Tiempo Real</h2>
         <p style="text-align: center; color: #94a3b8; margin-bottom: 30px;">Asi funciona el mercado de compra-venta de saldo en Cuba. Compramos a la tasa baja y vendemos a la tasa alta. Esa diferencia genera tu ganancia.</p>
@@ -67,7 +102,7 @@
     </div>
 </section>
 
-<section class="section">
+<section class="section section-dark">
     <div class="container">
         <h2>Por que SaldoPlus es confiable?</h2>
         <div class="features">
@@ -90,7 +125,7 @@
     </div>
 </section>
 
-<section class="section section-dark">
+<section class="section">
     <div class="container">
         <h2>Preguntas frecuentes</h2>
         <div class="features">
@@ -117,4 +152,18 @@
         <a href="{{ url_for('registro') }}" class="btn btn-large btn-primary">Crear Cuenta Gratis</a>
     </div>
 </section>
+
+<script>
+function calcular() {
+    let veces = document.getElementById('veces').value;
+    let invertido = veces * 25;
+    let recibir = veces * 32.50;
+    let ganancia = recibir - invertido;
+    
+    document.getElementById('veces-valor').textContent = veces;
+    document.getElementById('invertido').textContent = invertido.toFixed(2) + ' CUP';
+    document.getElementById('recibir').textContent = recibir.toFixed(2) + ' CUP';
+    document.getElementById('ganancia').textContent = ganancia.toFixed(2) + ' CUP';
+}
+</script>
 {% endblock %}
