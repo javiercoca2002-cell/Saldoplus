@@ -207,6 +207,55 @@ def confirmar_pago(usuario_id):
     
     return redirect(url_for('admin'))
 
+@app.route('/api/dashboard')
+@login_required
+def api_dashboard():
+    operaciones = Operacion.query.filter_by(usuario_id=current_user.id).order_by(Operacion.fecha_creacion.desc()).all()
+    return {
+        'saldo': current_user.saldo_actual,
+        'ganado': current_user.total_ganado,
+        'activas': len([op for op in operaciones if op.estado == 'pendiente']),
+        'operaciones': [{
+            'id': op.id,
+            'monto': op.monto_invertido,
+            'retorno': op.monto_retorno,
+            'estado': op.estado,
+            'fecha': op.fecha_creacion.strftime('%d/%m/%Y')
+        } for op in operaciones[:5]]
+    }
+
+@app.route('/api/admin')
+@login_required
+def api_admin():
+    if not current_user.es_admin:
+        return {'error': 'Acceso denegado'}, 403
+    
+    usuarios = Usuario.query.filter_by(es_admin=False).all()
+    operaciones = Operacion.query.order_by(Operacion.fecha_creacion.desc()).all()
+    
+    return {
+        'total_usuarios': len(usuarios),
+        'total_invertido': sum(op.monto_invertido for op in operaciones if op.estado != 'cancelada'),
+        'total_pagado': sum(op.monto_retorno for op in operaciones if op.estado == 'completada'),
+        'usuarios': [{
+            'id': u.id,
+            'nombre': u.nombre,
+            'email': u.email,
+            'telefono': u.telefono,
+            'pago_pendiente': u.pago_pendiente,
+            'saldo': u.saldo_actual,
+            'ganado': u.total_ganado
+        } for u in usuarios],
+        'operaciones': [{
+            'id': op.id,
+            'usuario': op.usuario.nombre,
+            'monto': op.monto_invertido,
+            'retorno': op.monto_retorno,
+            'estado': op.estado,
+            'fecha': op.fecha_creacion.strftime('%d/%m/%Y')
+        } for op in operaciones]
+    }
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
