@@ -3,8 +3,9 @@
 {% block content %}
 <div class="container">
     <h1>Historial de Operaciones</h1>
-    <p style="color: #94a3b8; margin-bottom: 30px;">Aqui puedes ver todas tus inversiones, su estado y ganancias.</p>
+    <p style="color: #94a3b8; margin-bottom: 30px;">Aqui puedes ver todas tus inversiones, su estado y ganancias. Esta pagina se actualiza automaticamente.</p>
     {% if operaciones %}
+    <div id="tabla-operaciones">
     <table class="table">
         <thead>
             <tr>
@@ -35,7 +36,8 @@
             {% endfor %}
         </tbody>
     </table>
-    <div style="margin-top: 30px; padding: 20px; background: #1e293b; border-radius: 12px;">
+    </div>
+    <div id="resumen-ganancias" style="margin-top: 30px; padding: 20px; background: #1e293b; border-radius: 12px;">
         <h3>Resumen de ganancias</h3>
         {% set total_ganado = 0 %}
         {% for op in operaciones %}
@@ -51,4 +53,41 @@
     {% endif %}
     <a href="{{ url_for('dashboard') }}" class="btn btn-outline" style="margin-top: 20px;">← Volver al Panel</a>
 </div>
+
+<script>
+function actualizarOperaciones() {
+    fetch('/api/dashboard')
+        .then(response => response.json())
+        .then(data => {
+            if (data.operaciones.length > 0) {
+                let totalGanado = 0;
+                let html = '<table class="table"><thead><tr><th>ID</th><th>Monto Invertido</th><th>Retorno</th><th>Ganancia</th><th>Estado</th><th>Fecha</th></tr></thead><tbody>';
+                data.operaciones.forEach(op => {
+                    let ganancia = op.estado === 'completada' ? '+' + (op.retorno - op.monto).toFixed(2) + ' CUP' : '—';
+                    let claseGanancia = op.estado === 'completada' ? 'text-success' : '';
+                    if (op.estado === 'completada') {
+                        totalGanado += (op.retorno - op.monto);
+                    }
+                    html += `<tr>
+                        <td>#${op.id}</td>
+                        <td>${op.monto.toFixed(2)} CUP</td>
+                        <td>${op.retorno.toFixed(2)} CUP</td>
+                        <td class="${claseGanancia}">${ganancia}</td>
+                        <td><span class="status status-${op.estado}">${op.estado}</span></td>
+                        <td>${op.fecha}</td>
+                    </tr>`;
+                });
+                html += '</tbody></table>';
+                document.getElementById('tabla-operaciones').innerHTML = html;
+                document.getElementById('resumen-ganancias').innerHTML = `
+                    <h3>Resumen de ganancias</h3>
+                    <p style="font-size: 1.5rem; font-weight: 700; color: #10b981;">${totalGanado.toFixed(2)} CUP</p>
+                    <p style="color: #94a3b8;">Total ganado con SaldoPlus</p>
+                `;
+            }
+        });
+}
+
+setInterval(actualizarOperaciones, 60000);
+</script>
 {% endblock %}
